@@ -9,7 +9,7 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-
+    
 	if(mixStyle == NoMix)
 	{
 		if(DeckA.mySong.audio.getPosition() >= 0.9999 && pos < myPlaylist.getLength())
@@ -21,7 +21,7 @@ void ofApp::update(){
 			DJ.sync(DeckB, DeckA);
 			pos++;
 		}
-
+        
 		if(DeckB.mySong.audio.getPosition() >= 0.9999 && pos < myPlaylist.getLength())
 		{
 			DeckA.mySong.play();
@@ -29,8 +29,8 @@ void ofApp::update(){
 			DeckB.setDeck(myPlaylist.list[pos], myPlaylist.list[pos].getPath(), false);
 			DeckB.mySong.loadSong(myPlaylist.list[pos].getPath());
 			DJ.sync(DeckA, DeckB);
-			pos++;		
-		}	
+			pos++;
+		}
 	}
 	else if (mixStyle == SoftMix)
 	{
@@ -44,7 +44,12 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-
+    static int interElementsPad = 30;
+	for(int i = 0; i < myPlaylist.getLength(); i++)
+	{
+        ofDrawBitmapString(myPlaylist[i].getTitle(), 0,(i+1)*interElementsPad);
+    }
+    
 }
 
 //--------------------------------------------------------------
@@ -52,19 +57,23 @@ void ofApp::keyPressed(int key){
 	
 	// F1 Shows the Playlist
 	if (key == 257) { // 257 = F1
+#if defined OF_TARGET_WINVS || defined OF_TARGET_WINGCC
 		system("cls");
+#else
+        //system("clear");
+#endif
 		myPlaylist.showPlaylist();
 	}
 	
-	// F2 Starts the music from the beginning of the Playlist	
+	// F2 Starts the music from the beginning of the Playlist
 	if (key == 258) { // 258 = F2
 		DeckA.releaseDeck();
 		DeckB.releaseDeck();
 		DeckA.setDeck(myPlaylist.list[0], myPlaylist.list[0].getPath(), true);
 		DeckB.setDeck(myPlaylist.list[1], myPlaylist.list[1].getPath(), false);
 		pos = 2;
-		DeckA.setBPM(250);
-		DeckA.mySong.play();	
+		DeckA.setBPM(100);
+		DeckA.mySong.play();
 	}
 	
 	// F3 Stops all the music
@@ -72,61 +81,65 @@ void ofApp::keyPressed(int key){
 		ofSoundStopAll();
 		DeckA.releaseDeck();
 		DeckB.releaseDeck();
+#if defined OF_TARGET_WINVS || defined OF_TARGET_WINGCC
 		system("cls");
+#else
+        //system("clear");
+#endif
 	}
-
+    
 	if(key-'a' == 0) mixStyle = NoMix;   // Sets NoMix style
 	if(key-'b' == 0) mixStyle = SoftMix; // Sets SoftMix style
 	if(key-'c' == 0) mixStyle = HardMix; // Sets HardMix style
-
+    
 	/* Test Purposes
-	if (key-'a' >= 0 && key-'a' < myPlaylist.getLength() && PlayMode == true) {
-		if (!myPlaylist.list[key-'a'].isPlaying()) myPlaylist.list[key-'a'].play();
-		else myPlaylist.list[key-'a'].stop();
-	}
-	
-	if (key-'a') DeckA.mySong.play();
-
-	if (key-'b') DeckB.mySong.play();
-	*/
+     if (key-'a' >= 0 && key-'a' < myPlaylist.getLength() && PlayMode == true) {
+     if (!myPlaylist.list[key-'a'].isPlaying()) myPlaylist.list[key-'a'].play();
+     else myPlaylist.list[key-'a'].stop();
+     }
+     
+     if (key-'a') DeckA.mySong.play();
+     
+     if (key-'b') DeckB.mySong.play();
+     */
 }
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseMoved(int x, int y ){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseDragged(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mousePressed(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::mouseReleased(int x, int y, int button){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::windowResized(int w, int h){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
-
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
+    
 }
